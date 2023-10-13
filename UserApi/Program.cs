@@ -2,6 +2,7 @@ using UserApi.Data;
 using Microsoft.EntityFrameworkCore;
 using UserApi.Models;
 using Microsoft.AspNetCore.Identity;
+using UserApi.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,6 +27,8 @@ builder.Services
 //cong automapper
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
+//temos que adicionar o serviço
+builder.Services.AddScoped<RegisterService>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
