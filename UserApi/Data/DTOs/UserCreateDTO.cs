@@ -15,5 +15,7 @@ public class UserCreateDTO
     [Required]
     [DataType(DataType.Password)] // Explicita-mos que deve ser tratado como uma senha 
     public string Password { get; set; }
-
+    [Required]
+    [Compare("Password")]
+    public string RePassword { get; set; }
 }
