@@ -63,7 +63,7 @@ public class UserController : ControllerBase
 
 
     [HttpPost("login")]
-    public async  Task<IActionResult> Login(  dto)
+    public async  Task<IActionResult> Login(LoginUserDto dto)
     {
       await  _registerAndLoginService.Login(dto);
         return Ok("User Atenticado");
