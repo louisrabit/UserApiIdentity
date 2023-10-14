@@ -1,8 +1,5 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using UserApi.Data.DTOs;
-using UserApi.Models;
 using UserApi.Services;
 
 namespace UserApi.Controllers;
@@ -16,11 +13,11 @@ public class UserController : ControllerBase
     //private IMapper _mapper;
     ////ja estamos a criar o User
     //private UserManager<User> _userManager;
-    private RegisterService _registerService;
+    private RegisterAndLoginService _registerAndLoginService;
 
-    public UserController(RegisterService registerService)
+    public UserController(RegisterAndLoginService registerService)
     {
-        _registerService = registerService;
+        _registerAndLoginService = registerService;
     }
 
     //public UserController(IMapper mapper, UserManager<User> userManager)
@@ -34,7 +31,7 @@ public class UserController : ControllerBase
 
 
 
-    [HttpPost]
+    [HttpPost("register")]
     //Metodo que pode ou nao retornar um valor
     //tipo de retorno Async tem que Ser uma Task , etc etc --> tem obrigatoriedades 
     public async Task<IActionResult> RegistUser(UserCreateDTO dto) // No momento que tivemos a receber o dto e implementar a logica de cadastro , vamos criar um User 
@@ -57,12 +54,22 @@ public class UserController : ControllerBase
         //else {
         //    return BadRequest();
         //}
-       await _registerService.Register(dto);
+       await _registerAndLoginService.Register(dto);
         //precisamos de informar
 
             return Ok("Usuario Cadastrado");
       
     }
+
+
+    [HttpPost("login")]
+    public async  Task<IActionResult> Login(  dto)
+    {
+      await  _registerAndLoginService.Login(dto);
+        return Ok("User Atenticado");
+    }
+
+  
 }
 
     //Mover para um serviço a logica 
