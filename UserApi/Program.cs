@@ -12,7 +12,10 @@ using System.Text;
 var builder = WebApplication.CreateBuilder(args);
 
 
-var connectionString = builder.Configuration.GetConnectionString("UsuarioConnection");
+//var connectionString = builder.Configuration.GetConnectionString("UsuarioConnection");
+var connectionString = builder.Configuration["ConnectionStrings:UsuarioConnection"];
+
+
 
 // Add services to the container.
 //Contaact with databse
@@ -49,7 +52,8 @@ builder.Services.AddAuthentication(opt =>
     opt.TokenValidationParameters = new TokenValidationParameters
     {
         ValidateIssuerSigningKey = true,
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("123swdwecwXZSCERCDSDEWCECXWECCEWC45")),
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["SymmetricSecurityKey"])),
+        //IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("123swdwecwXZSCERCDSDEWCECXWECCEWC45")),
         ValidateAudience = false,
         ValidateIssuer = false,
         ClockSkew = TimeSpan.Zero

@@ -10,6 +10,13 @@ namespace UserApi.Services;
 
 public   class TokenServicce
 {
+    private IConfiguration _configuration;
+
+    public TokenServicce(IConfiguration configuration)
+    {
+        _configuration = configuration;
+    }
+
     public string GenerateToken(User user)
     {
         Claim[] claims = new Claim[]
@@ -21,7 +28,7 @@ public   class TokenServicce
 
 
 
-        var chave = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("123swdwecwXZSCERCDSDEWCECXWECCEWC45"));
+        var chave = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["SymmetricSecurityKey"]));
         var signingCredentials = new SigningCredentials(chave, SecurityAlgorithms.HmacSha256);
 
         var token = new JwtSecurityToken(
