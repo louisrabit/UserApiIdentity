@@ -24,6 +24,10 @@ builder.Services
 .AddEntityFrameworkStores<UserDbContext>()
 .AddDefaultTokenProviders();
 
+builder.Services.AddScoped<RegisterAndLoginService>();
+
+builder.Services.AddScoped<TokenServicce>();
+
 //cong automapper
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
