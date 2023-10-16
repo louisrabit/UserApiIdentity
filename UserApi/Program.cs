@@ -3,6 +3,11 @@ using Microsoft.EntityFrameworkCore;
 using UserApi.Models;
 using Microsoft.AspNetCore.Identity;
 using UserApi.Services;
+using UserApi.Authorization;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,6 +33,30 @@ builder.Services.AddScoped<RegisterAndLoginService>();
 
 builder.Services.AddScoped<TokenServicce>();
 
+builder.Services.AddAuthorization(opt =>
+{
+    opt.AddPolicy("MinAge", policy => policy.AddRequirements(new MinAge(18)));
+});
+
+builder.Services.AddSingleton<IAuthorizationHandler, AgeAuthorization>();
+
+// Autenticaçao
+builder.Services.AddAuthentication(opt =>
+{
+    opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(opt =>
+{
+    opt.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("123swdwecwXZSCERCDSDEWCECXWECCEWC45")),
+        ValidateAudience = false,
+        ValidateIssuer = false,
+        ClockSkew = TimeSpan.Zero
+};
+});
+
+
 //cong automapper
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
@@ -49,6 +78,10 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+// dizer á app que utiliza autenticaçao
+app.UseAuthentication();
+
 
 app.UseAuthorization();
 
